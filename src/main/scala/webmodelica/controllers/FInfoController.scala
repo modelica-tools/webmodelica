@@ -10,7 +10,7 @@ import io.circe.generic.auto._
 import io.circe.generic.semiauto._
 
 class FInfoController(config: WMConfig)
-    extends JsonCodecs {
+    extends FinchApi {
   import buildinfo.BuildInfo
 
   val info:Endpoint[Infos] = get("info") {
@@ -23,5 +23,5 @@ class FInfoController(config: WMConfig)
     ))
   }
 
-  val service = (info).toServiceAs[Application.Json]
+  val api = info
 }

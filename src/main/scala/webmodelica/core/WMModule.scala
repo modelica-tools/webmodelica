@@ -1,9 +1,11 @@
 package webmodelica.core
 
 import webmodelica.constants.confDefault
+import webmodelica.controllers._
 import webmodelica.models.config._
 import webmodelica.models._
-import webmodelica.services.TokenGenerator
+import webmodelica.services._
+import webmodelica.stores._
 import org.slf4j.LoggerFactory;
 import org.mongodb.scala._
 import java.security.MessageDigest
@@ -41,8 +43,20 @@ trait WMModule
   lazy val mongoDB:MongoDatabase =
     mongoClient.getDatabase(dbConfig.database).withCodecRegistry(codecRegistry)
 
+  // services
+  lazy val sessionRegistry: SessionRegistry = new SessionRegistry(mopeConfig)
   lazy val tokenGenerator: TokenGenerator = new TokenGenerator(config.secret)
   lazy val digestHasher: MessageDigest = MessageDigest.getInstance("SHA-256")
+
+  // stores
+  def projectStore = new ProjectStore(mongoDB)
+  def userStore = new UserStore(mongoDB)
+
+  //controllers
+  def infoController = new FInfoController(config)
+  def projectController = new FProjectController(projectStore)
+
+  def controllerRoutes = infoController.api :+: projectController.api
 
   override def startup():Unit = { val _ = mongoClient }
   override def shutdown():Unit = { mongoClient.close() }

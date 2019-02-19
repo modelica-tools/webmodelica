@@ -28,3 +28,26 @@ class ProjectController@Inject()(store:ProjectStore)
     store.all().map(_.map(JSProject.apply))
   }
 }
+
+
+import com.twitter.util.Future
+import io.finch._
+import io.finch.syntax._
+import io.finch.circe._
+import io.circe.generic.semiauto._
+import shapeless._
+
+class FProjectController(store:ProjectStore)
+    extends FinchApi {
+  val createProjects:Endpoint[JSProject] = post("projects" :: jsonBody[ProjectRequest]) { project:ProjectRequest =>
+    log.debug(s"got project $project")
+    val newProj = Project(project)
+    store.add(newProj).map(_ => JSProject(newProj)).map(Ok(_))
+  }
+
+  val allProjects:Endpoint[Seq[JSProject]] = get("projects") {
+    store.all().map(_.map(JSProject.apply)).map(Ok(_))
+  }
+
+  val api = createProjects :+: allProjects
+}
