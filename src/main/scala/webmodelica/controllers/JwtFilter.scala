@@ -3,7 +3,6 @@ package webmodelica.controllers
 import com.google.inject.Inject
 import com.twitter.finagle.{Service, SimpleFilter, http}
 import com.twitter.finagle.http.{Request, Response, Status}
-import com.twitter.finatra.http.response.ResponseBuilder
 import com.twitter.util.Future
 import webmodelica.constants
 import webmodelica.services.TokenGenerator
