@@ -8,13 +8,13 @@ import com.google.inject.{Provides, Singleton}
 import org.mongodb.scala._
 import webmodelica.models._
 import webmodelica.services.TokenGenerator
+import webmodelica.constants.confDefault
 
 import scala.concurrent.ExecutionContext
 
 object AppModule
   extends TwitterModule
     with webmodelica.models.DocumentWriters {
-  private val confDefault = "webmodelica.conf"
   val env = flag(name="env", default="development", help="environment to use")
   val configFile = flag(name="configFile", default=confDefault, help="the config file to use")
 
