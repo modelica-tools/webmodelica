@@ -3,16 +3,20 @@ package webmodelica.models
 import org.mongodb.scala.bson.BsonObjectId
 import io.scalaland.chimney.dsl._
 
+import io.circe.generic.JsonCodec
+
 case class Project(
   _id: BsonObjectId,
   owner: String,
   name: String,
 )
 
+@JsonCodec
 case class ProjectRequest(
   owner: String,
   name: String)
 
+@JsonCodec
 case class JSProject(
   id: String,
   owner: String,

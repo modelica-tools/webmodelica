@@ -16,4 +16,7 @@ trait JsonCodecs {
   implicit val pathDecoder:Decoder[Path] = Decoder.decodeString.map(s => Paths.get(s))
   implicit val infoEncoder:Encoder[Infos] = deriveEncoder
   implicit val infoDecoder:Decoder[Infos] = deriveDecoder
+
+  // implicit val projRequEncoder:Encoder[ProjectRequest] = deriveEncoder
+  // implicit val projRequDecoder:Decoder[ProjectRequest] = deriveDecoder
 }

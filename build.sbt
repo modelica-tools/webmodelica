@@ -17,6 +17,8 @@ val copyrightName = "N. Justus"
 val copyrightYear = "2019"
 val license = "MPLv2"
 
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+
 lazy val root = (project in file("."))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging)
   .settings(Common.settings)
