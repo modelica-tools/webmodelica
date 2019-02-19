@@ -43,15 +43,18 @@ object Dependencies {
     "com.github.pathikrit" %% "better-files" % "3.7.+",
     "io.scalaland" %% "chimney" % "0.3.+",
     "com.pauldijou" %% "jwt-core" % "1.1.+",
+    "io.circe" %% "circe-generic" % "0.10.+",
   )
 
   val deps = Seq(
     "com.twitter"   %% "finatra-http"    % finatraVersion,
     "ch.qos.logback" % "logback-classic" % "1.2.3",
-    "com.github.finagle" %% "finagle-oauth2" % finatraVersion,
     "javax.activation" % "activation" % "1.1.1", //java EE package needed for finagle because it's not provided anymore since java 11
     "org.mongodb.scala" %% "mongo-scala-driver" % "2.5.+",
     "org.scalatest" %% "scalatest" % "3.0.+" % "test",
     "io.github.finagle" %% "featherbed" % "0.3.+",
+
+    "com.github.finagle" %% "finch-core" % "0.27.+",
+    "com.github.finagle" %% "finch-circe" % "0.27.+",
   ) ++ utils
 }
