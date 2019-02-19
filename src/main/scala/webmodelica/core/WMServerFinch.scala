@@ -6,6 +6,7 @@ import com.twitter.finagle.{Http, Service}
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.util.Await
 import webmodelica.constants.confDefault
+import webmodelica.controllers._
 import org.slf4j.LoggerFactory;
 
 object WMServerFinchMain extends WMServerFinch
@@ -26,15 +27,23 @@ class WMServerFinch
   def main(): Unit = {
     import module.log
 
-    import io.finch._
-    import io.finch.circe._
-    import io.finch.syntax._
+    import shapeless._
     import io.circe.generic.auto._
+    import io.finch.circe._
+    import io.finch._
+    import io.finch.syntax._
     val api: Endpoint[String] = get("hello") { Ok("Hello, World!") }
+
+    val ctrl = new FInfoController(module.config)
+    val routes = api :+: ctrl.info
 
     module.startup()
     val server = Http.server
-      .serve(httpPort(), api.toServiceAs[Text.Plain])
+      .withAdmissionControl
+      .concurrencyLimit(
+        maxConcurrentRequests = 10,
+        maxWaiters = 10)
+      .serve(httpPort(), ctrl.service)
 
     log.info(s"Serving in ${env()} on ${server.boundAddress}")
 
